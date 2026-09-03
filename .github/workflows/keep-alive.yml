@@ -16,5 +16,5 @@ jobs:
         run: |
           set -uo pipefail
           echo "Pinging $(wc -l < urls.txt) URLs..."
-          cat urls.txt | xargs -P 10 -I{} curl -s -o /dev/null --max-time 45 -w "%{http_code}  %{time_total}s  {}\n" "{}" || true
+          cat urls.txt | xargs -P 10 -I{} curl -s -o /dev/null --max-time 45 -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" -w "%{http_code}  %{time_total}s  {}\n" "{}" || true   
           echo "Done."
