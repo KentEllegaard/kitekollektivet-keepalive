@@ -1,0 +1,20 @@
+name: Keep-alive ping (kitekollektivet.dk)
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Ping all landing pages (parallel, discard body, no size limit)
+        run: |
+          set -uo pipefail
+          echo "Pinging $(wc -l < urls.txt) URLs..."
+          cat urls.txt | xargs -P 10 -I{} curl -s -o /dev/null --max-time 30 -w "%{http_code}  %{time_total}s  {}\n" "{}"
+          echo "Done."
